@@ -1,0 +1,10 @@
+.venv/
+.venv-vision/
+__pycache__/
+*.pyc
+data/*.sqlite3
+data/*.sqlite3-*
+data/jobs/
+data/vision_cache/
+data/smoke_vision/
+.env

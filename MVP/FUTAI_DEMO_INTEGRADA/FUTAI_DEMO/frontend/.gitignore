@@ -1,0 +1,15 @@
+# Dependencias y build
+node_modules
+dist
+
+# Configuración local; .env.example se conserva en el proyecto.
+.env
+.env.local
+.env.*.local
+
+# Sistema y editores
+.DS_Store
+*.log
+.vscode/*
+!.vscode/extensions.json
+.idea

@@ -1,0 +1,500 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Flujo FUT.AI</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: encabezado corto, diagrama de carriles a todo el ancho con scroll propio, estado en tres columnas debajo */
+:root {
+  --bg: #f6f8f5; --panel: #ffffff; --fg: #18211b; --muted: #5d6b61; --line: #cfd8d1;
+  --lane: #eef3ef; --lane-alt: #e6ede8;
+  --done: #1f7a4d; --done-bg: #e3f2ea;
+  --wip: #a8650f; --wip-bg: #fbefdc;
+  --todo: #7a857d; --todo-bg: #f3f5f3;
+  --region: #eef4f9; --gcp: #2f6aa3;
+  --f-display: "Barlow Semi Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111713; --panel: #18201b; --fg: #e4ebe6; --muted: #9aa89f; --line: #2e3a33;
+  --lane: #161e19; --lane-alt: #1b241f;
+  --done: #5cc58f; --done-bg: #173325; --wip: #e3a54e; --wip-bg: #3a2a12; --todo: #8d988f; --todo-bg: #1d2520;
+  --region: #142029; --gcp: #6fa6d8;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111713; --panel: #18201b; --fg: #e4ebe6; --muted: #9aa89f; --line: #2e3a33;
+  --lane: #161e19; --lane-alt: #1b241f;
+  --done: #5cc58f; --done-bg: #173325; --wip: #e3a54e; --wip-bg: #3a2a12; --todo: #8d988f; --todo-bg: #1d2520;
+  --region: #142029; --gcp: #6fa6d8;
+  color-scheme: dark }
+
+body { background: var(--bg); color: var(--fg); font: 16px/1.5 var(--f-body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 20px; padding-block: 32px 56px; display: grid; gap: 28px; }
+header { display: grid; gap: 6px; }
+.eyebrow { font: 500 12px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 700 clamp(28px, 4vw, 40px)/1.05 var(--f-display); margin: 0; text-wrap: balance; }
+.lede { margin: 0; color: var(--muted); max-width: 68ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 18px; font-size: 14px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; }
+.chip i { width: 14px; height: 14px; border-radius: 3px; border: 2px solid; display: inline-block; }
+.chip.done i { background: var(--done-bg); border-color: var(--done); }
+.chip.wip i { background: var(--wip-bg); border-color: var(--wip); }
+.chip.todo i { background: var(--todo-bg); border-color: var(--todo); border-style: dashed; }
+
+.diagram { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; }
+.diagram svg { display: block; min-width: 1100px; width: 100%; height: auto; }
+svg text { font-family: var(--f-body); fill: var(--fg); }
+svg .lane-label { font: 600 15px var(--f-display); letter-spacing: .02em; }
+svg .lane-sub { font: 11px var(--f-mono); fill: var(--muted); }
+svg .t { font-size: 13px; }
+svg .tm { font: 11px var(--f-mono); fill: var(--muted); }
+svg .task rect { stroke-width: 2; }
+svg .done rect, svg .done path.store { fill: var(--done-bg); stroke: var(--done); }
+svg .wip rect, svg .wip path.store { fill: var(--wip-bg); stroke: var(--wip); }
+svg .todo rect, svg .todo path.store { fill: var(--todo-bg); stroke: var(--todo); stroke-dasharray: 5 4; }
+svg .flow { stroke: var(--fg); stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
+svg .assoc { stroke: var(--muted); stroke-width: 1.3; fill: none; stroke-dasharray: 4 4; }
+svg .ev { fill: var(--panel); stroke: var(--fg); stroke-width: 2; }
+svg .ev.end { stroke-width: 4; }
+
+.status { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.col { background: var(--panel); border: 1px solid var(--line); border-top: 4px solid; border-radius: 8px; padding: 16px 18px; min-width: 0; }
+.col.done { border-top-color: var(--done); } .col.wip { border-top-color: var(--wip); } .col.todo { border-top-color: var(--todo); }
+.col h2 { font: 600 20px/1.1 var(--f-display); margin: 0 0 10px; }
+.col ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 15px; }
+.col code, .infra code, .conex code { font: 13px var(--f-mono); }
+.infra { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; }
+.infra table { border-collapse: collapse; width: 100%; font-size: 14px; }
+.infra th, .infra td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.infra th { font: 600 13px var(--f-display); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.infra tr:last-child td { border-bottom: 0; }
+h2.sec { font: 600 22px/1.1 var(--f-display); margin: 0 0 10px; }
+.nav { display: flex; flex-wrap: wrap; gap: 8px 20px; font: 500 14px var(--f-body); }
+.nav a { color: var(--gcp); }
+.diagram.arch svg { min-width: 1400px; }
+svg .frame { fill: none; stroke: var(--line); stroke-width: 1.5; }
+svg .frame.gcp { stroke: var(--gcp); stroke-width: 2; }
+svg .frame.region { fill: var(--region); stroke: var(--gcp); stroke-dasharray: 6 4; }
+svg .card { fill: var(--panel); stroke: var(--line); stroke-width: 1.2; }
+svg .done .card { fill: var(--done-bg); stroke: var(--done); stroke-width: 2; }
+svg .wip .card { fill: var(--wip-bg); stroke: var(--wip); stroke-width: 2; }
+svg .todo .card { fill: var(--todo-bg); stroke: var(--todo); stroke-width: 2; stroke-dasharray: 5 4; }
+svg .ft { font: 700 17px var(--f-display); }
+svg .ft.gcp { fill: var(--gcp); }
+svg .hd { font: 600 14.5px var(--f-display); }
+svg .s { font-size: 12.5px; }
+svg .sb { font-size: 12.5px; font-weight: 600; }
+svg .m { font: 11px var(--f-mono); fill: var(--muted); }
+svg .link { stroke: var(--fg); stroke-width: 1.6; fill: none; marker-end: url(#flecha); }
+svg .link.both { marker-start: url(#flecha); }
+svg .num circle { fill: var(--gcp); }
+svg .num text { fill: var(--panel); font: 700 11px var(--f-mono); text-anchor: middle; dominant-baseline: central; }
+.conex { margin: 0; padding-left: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 8px 24px; font-size: 15px; }
+.conex li { display: grid; grid-template-columns: 26px 1fr; gap: 8px; align-items: start; }
+.conex b { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--gcp); color: var(--panel); font: 700 12px var(--f-mono); }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Capstone · proyecto futai-capstone-2026</span>
+    <h1>Del video del partido al reporte por jugador</h1>
+    <p class="lede">Dónde vive cada pieza de FUT.AI y cómo pasa un partido por ellas: tu Mac, GitHub y Google Cloud en Iowa. Los colores marcan qué está construido y qué falta.</p>
+    <nav class="nav" aria-label="Secciones"><a href="#arquitectura">Arquitectura</a><a href="#conexiones">Conexiones</a><a href="#proceso">Proceso</a><a href="#estado">Estado</a></nav>
+    <div class="legend" aria-label="Leyenda">
+      <span class="chip done"><i></i>Hecho y probado</span>
+      <span class="chip wip"><i></i>En curso o bloqueado</span>
+      <span class="chip todo"><i></i>Pendiente</span>
+    </div>
+  </header>
+
+  <section id="arquitectura">
+    <h2 class="sec">Arquitectura: dónde está cada cosa</h2>
+    <div class="diagram arch" role="img" aria-label="Arquitectura: Mac en Santiago, GitHub, servicios externos y Google Cloud en us-central1">
+    <svg viewBox="0 0 1590 1060" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--fg)"/>
+        </marker>
+      </defs>
+
+      <!-- ===== Tu Mac ===== -->
+      <rect class="frame" x="20" y="60" width="360" height="540" rx="12"/>
+      <text class="ft" x="36" y="88">Tu Mac · donde trabajamos</text>
+      <text class="m" x="36" y="106">Santiago, Chile · macOS · Claude Code</text>
+      <g class="done"><rect class="card" x="36" y="120" width="328" height="196" rx="8"/>
+        <text class="hd" x="50" y="142">Repositorio local</text>
+        <text class="m" x="50" y="160">~/Desktop/IA_Deportes · rama gcp-pipeline</text>
+        <text class="s" x="50" y="182"><tspan font-weight="600">worker/</tspan> pipeline.py · cancha.py · metricas.py</text>
+        <text class="s" x="50" y="200">botsort_futai.yaml · Dockerfile · requirements</text>
+        <text class="s" x="50" y="222"><tspan font-weight="600">db/</tspan> esquema.sql · 002_metricas.sql</text>
+        <text class="s" x="50" y="244"><tspan font-weight="600">infra/</tspan> lifecycle.json · cors.json</text>
+        <text class="s" x="50" y="266"><tspan font-weight="600">docs/</tspan> flujo_futai.html · flujo_futai.bpmn</text>
+        <text class="s" x="50" y="288"><tspan font-weight="600">fut-ai-landing/</tspan> sitio web (React)</text>
+        <text class="m" x="50" y="306">guía: FUT.AI_Pipeline_GCP.docx</text>
+      </g>
+      <g class="done"><rect class="card" x="36" y="328" width="328" height="128" rx="8"/>
+        <text class="hd" x="50" y="350">Pruebas locales · 2,3 GB</text>
+        <text class="m" x="50" y="368">~/Videos/futai-pruebas</text>
+        <text class="s" x="50" y="390">partido3-1080p.mp4 (3 min) · partido3-60s.mp4</text>
+        <text class="s" x="50" y="410">pesos/ (442 MB): copia de los 5 modelos</text>
+        <text class="s" x="50" y="430">ocr/: recortes y lecturas de dorsales</text>
+        <text class="m" x="50" y="448">.venv: PyTorch (MPS) · Ultralytics 8.4.33</text>
+      </g>
+      <g><rect class="card" x="36" y="468" width="328" height="118" rx="8"/>
+        <text class="hd" x="50" y="490">Herramientas</text>
+        <text class="s" x="50" y="512">gcloud CLI 588 · sesión iniciada</text>
+        <text class="s" x="50" y="532">gh 2.102 (sin sesión) · Node 24</text>
+        <text class="s" x="50" y="552">Safari: consola de Google Cloud</text>
+        <text class="m" x="50" y="574">Mac: prueba ~11 min por minuto de video</text>
+      </g>
+
+      <!-- ===== GitHub ===== -->
+      <rect class="frame" x="20" y="630" width="360" height="136" rx="12"/>
+      <text class="ft" x="36" y="658">GitHub</text>
+      <text class="m" x="36" y="676">github.com/rpalma132/IA_Deportes</text>
+      <text class="s" x="36" y="698">Rama gcp-pipeline · último commit fc29015</text>
+      <text class="s" x="36" y="718">main todavía sin fusionar</text>
+      <text class="s" x="36" y="738">.gitignore deja fuera videos, pesos .pt,</text>
+      <text class="s" x="36" y="756">.venv y secretos</text>
+
+      <!-- ===== Externos ===== -->
+      <rect class="frame" x="20" y="796" width="360" height="244" rx="12"/>
+      <text class="ft" x="36" y="824">Servicios externos</text>
+      <text class="sb" x="36" y="850">Cloud Vision API (global)</text>
+      <text class="s" x="36" y="868">Prueba de dorsales: 719 imágenes,</text>
+      <text class="s" x="36" y="886">gratis hasta 1.000 al mes</text>
+      <text class="sb" x="36" y="914">Roboflow · github.com/roboflow/sports</text>
+      <text class="s" x="36" y="932">Origen de los 3 modelos de fútbol (MIT)</text>
+      <text class="sb" x="36" y="960">Ultralytics</text>
+      <text class="s" x="36" y="978">Origen de yolo11s y yolo11s-pose</text>
+      <text class="sb" x="36" y="1006">Google Cloud Ventas</text>
+      <text class="s" x="36" y="1024">Solicitud de cuota GPU enviada</text>
+
+      <!-- ===== Google Cloud ===== -->
+      <rect class="frame gcp" x="420" y="20" width="1160" height="1030" rx="14"/>
+      <text class="ft gcp" x="440" y="48">Google Cloud · proyecto futai-capstone-2026</text>
+      <text class="m" x="440" y="66">nombre «FUT AI» · n.º 409694239452 · cuenta de facturación completa, en CLP</text>
+
+      <!-- Región -->
+      <rect class="frame region" x="440" y="84" width="800" height="950" rx="12"/>
+      <text class="ft" x="456" y="110">Región us-central1 · Iowa, EE. UU.</text>
+      <text class="m" x="790" y="110">base en zona us-central1-a · ~150 ms desde Chile</text>
+
+      <!-- Cloud Storage -->
+      <rect class="frame" x="456" y="124" width="768" height="256" rx="10"/>
+      <text class="hd" x="470" y="146">Cloud Storage · 3 buckets</text>
+      <text class="m" x="660" y="146">Standard · acceso público bloqueado · permisos uniformes</text>
+      <g class="done"><rect class="card" x="468" y="158" width="244" height="210" rx="8"/>
+        <text class="hd" x="482" y="180">Videos · 290 MB</text>
+        <text class="m" x="482" y="197">futai-capstone-2026-videos-us</text>
+        <text class="s" x="482" y="219">partidos/1/video.mp4 (3 min)</text>
+        <text class="s" x="482" y="237">partidos/1/video_60s.mp4</text>
+        <text class="s" x="482" y="255">partidos/1/miniaturas/ (38 jpg)</text>
+        <text class="s" x="482" y="279">Ciclo: Nearline 30 d · Archive 180 d</text>
+        <text class="s" x="482" y="297">CORS: localhost:5173 (PUT, GET)</text>
+        <text class="m" x="482" y="325">sa-api, sa-worker:</text>
+        <text class="m" x="482" y="341">leer y escribir</text>
+      </g>
+      <g class="done"><rect class="card" x="724" y="158" width="244" height="210" rx="8"/>
+        <text class="hd" x="738" y="180">Modelos · 453 MB</text>
+        <text class="m" x="738" y="197">futai-capstone-2026-models-us</text>
+        <text class="m" x="738" y="215">pretrained/</text>
+        <text class="s" x="738" y="235">roboflow/pitch/v9 · cancha</text>
+        <text class="s" x="738" y="253">roboflow/players/v9 · jugadores</text>
+        <text class="s" x="738" y="271">roboflow/ball/v2 · balón</text>
+        <text class="s" x="738" y="289">yolo11s-pose/v1 · pose</text>
+        <text class="s" x="738" y="307">yolo11s/v1 · general (respaldo)</text>
+        <text class="m" x="738" y="335">sa-worker: leer</text>
+        <text class="m" x="738" y="351">sa-trainer: escribir</text>
+      </g>
+      <g class="done"><rect class="card" x="980" y="158" width="232" height="210" rx="8"/>
+        <text class="hd" x="994" y="180">Datasets · 7 KB</text>
+        <text class="m" x="994" y="197">futai-capstone-2026-datasets-us</text>
+        <text class="m" x="994" y="215">schema/</text>
+        <text class="s" x="994" y="235">esquema.sql</text>
+        <text class="s" x="994" y="253">esquema_inicial.sql</text>
+        <text class="s" x="994" y="271">002_metricas_y_partido.sql</text>
+        <text class="s" x="994" y="295">Más adelante: imágenes</text>
+        <text class="s" x="994" y="313">etiquetadas del balón</text>
+        <text class="m" x="994" y="341">sa-trainer: leer</text>
+      </g>
+
+      <!-- Cloud Run -->
+      <rect class="frame" x="456" y="400" width="380" height="304" rx="10"/>
+      <text class="hd" x="470" y="422">Cloud Run</text>
+      <g class="done"><rect class="card" x="468" y="434" width="356" height="152" rx="8"/>
+        <text class="hd" x="482" y="456">Job futai-worker-cpu</text>
+        <text class="s" x="482" y="477">8 vCPU · 32 GiB · sin GPU · máximo 3 h</text>
+        <text class="s" x="482" y="496">Imagen worker:v2 · cuenta sa-worker</text>
+        <text class="s" x="482" y="515">Secreto DB_DSN ← db-dsn versión 2</text>
+        <text class="s" x="482" y="534">Conexión directa a futai-db-us</text>
+        <text class="m" x="482" y="556">Probado: 60 s de video en 23 min,</text>
+        <text class="m" x="482" y="572">resultados guardados en Cloud SQL</text>
+      </g>
+      <g class="wip"><rect class="card" x="468" y="596" width="356" height="48" rx="8"/>
+        <text class="hd" x="482" y="616">Job futai-worker (GPU NVIDIA L4)</text>
+        <text class="m" x="482" y="634">esperando cuota · máximo 1 h por ejecución</text>
+      </g>
+      <g class="todo"><rect class="card" x="468" y="652" width="356" height="44" rx="8"/>
+        <text class="hd" x="482" y="671">Servicio futai-api</text>
+        <text class="m" x="482" y="687">pendiente: subida de videos y reportes</text>
+      </g>
+
+      <!-- Cloud SQL -->
+      <rect class="frame" x="852" y="400" width="372" height="304" rx="10"/>
+      <text class="hd" x="866" y="422">Cloud SQL</text>
+      <g class="done"><rect class="card" x="864" y="434" width="348" height="260" rx="8"/>
+        <text class="hd" x="878" y="456">futai-db-us · PostgreSQL 16</text>
+        <text class="s" x="878" y="477">Enterprise · db-custom-1-3840</text>
+        <text class="s" x="878" y="495">1 vCPU · 3,75 GB RAM · 20 GB SSD</text>
+        <text class="s" x="878" y="513">Zonal (us-central1-a) · respaldo 03:00</text>
+        <text class="sb" x="878" y="531">Apagada: se enciende solo para correr</text>
+        <text class="m" x="878" y="551">futai-capstone-2026:us-central1:futai-db-us</text>
+        <text class="s" x="878" y="571">Base futai · usuario futai_app</text>
+        <text class="s" x="878" y="593">Tablas: partidos · posiciones · balon</text>
+        <text class="s" x="878" y="611">pose_muestras · metricas_jugador · pases</text>
+        <text class="s" x="878" y="629">jugadores · asignaciones · alertas</text>
+        <text class="m" x="878" y="653">IP pública sin redes autorizadas:</text>
+        <text class="m" x="878" y="669">solo entra el conector de Cloud SQL</text>
+      </g>
+
+      <!-- Artifact Registry y Cloud Build -->
+      <rect class="frame" x="456" y="724" width="380" height="132" rx="10"/>
+      <text class="hd" x="470" y="746">Artifact Registry</text>
+      <g class="done"><rect class="card" x="468" y="758" width="356" height="86" rx="8"/>
+        <text class="hd" x="482" y="780">Repositorio futai (Docker)</text>
+        <text class="s" x="482" y="800">worker:v2 · 5,5 GB</text>
+        <text class="m" x="482" y="820">CUDA 12.4 + PyTorch + Ultralytics</text>
+      </g>
+      <rect class="frame" x="852" y="724" width="372" height="132" rx="10"/>
+      <text class="hd" x="866" y="746">Cloud Build</text>
+      <g class="done"><rect class="card" x="864" y="758" width="348" height="86" rx="8"/>
+        <text class="s" x="878" y="780">Construye la imagen desde worker/</text>
+        <text class="s" x="878" y="800">e2-standard-2 · unos 13 min por imagen</text>
+        <text class="m" x="878" y="820">código subido: bucket …_cloudbuild</text>
+      </g>
+
+      <!-- Historial -->
+      <rect class="frame" x="456" y="884" width="768" height="134" rx="10"/>
+      <text class="hd" x="470" y="906">Antes: Santiago (southamerica-west1)</text>
+      <text class="s" x="470" y="930">Base, 3 buckets, repositorio de imágenes y job: migrados a Iowa y borrados el 16-10-2026.</text>
+      <text class="s" x="470" y="950">Motivo: Iowa cuesta 40 % menos en base de datos y 33 % menos en almacenamiento,</text>
+      <text class="s" x="470" y="970">y está junto a la GPU L4, que no existe en Santiago.</text>
+      <text class="m" x="470" y="996">Secreto db-dsn versión 1 (Santiago): desactivada</text>
+
+      <!-- Servicios globales -->
+      <rect class="frame" x="1256" y="84" width="312" height="950" rx="12"/>
+      <text class="ft" x="1272" y="110">Servicios globales</text>
+      <g class="done"><rect class="card" x="1268" y="124" width="288" height="104" rx="8"/>
+        <text class="hd" x="1282" y="146">Secret Manager · db-dsn</text>
+        <text class="s" x="1282" y="167">v2 activa → futai-db-us</text>
+        <text class="s" x="1282" y="186">v1 desactivada (Santiago)</text>
+        <text class="m" x="1282" y="210">acceso: sa-api, sa-worker</text>
+      </g>
+      <g class="done"><rect class="card" x="1268" y="240" width="288" height="306" rx="8"/>
+        <text class="hd" x="1282" y="262">Cuentas de servicio (IAM)</text>
+        <text class="sb" x="1282" y="286">sa-worker · corre el análisis</text>
+        <text class="m" x="1282" y="304">videos-us: leer y escribir</text>
+        <text class="m" x="1282" y="320">models-us: leer</text>
+        <text class="m" x="1282" y="336">Cloud SQL: cliente · secreto: leer</text>
+        <text class="sb" x="1282" y="362">sa-api · la app (futura)</text>
+        <text class="m" x="1282" y="380">videos-us: leer y escribir</text>
+        <text class="m" x="1282" y="396">lanzar jobs · Cloud SQL: cliente</text>
+        <text class="m" x="1282" y="412">firmar URLs · secreto: leer</text>
+        <text class="sb" x="1282" y="438">sa-trainer · afinar modelos</text>
+        <text class="m" x="1282" y="456">models-us: escribir</text>
+        <text class="m" x="1282" y="472">datasets-us: leer</text>
+        <text class="s" x="1282" y="500">Sin claves JSON descargadas:</text>
+        <text class="s" x="1282" y="518">cada cuenta tiene solo lo que usa</text>
+      </g>
+      <g><rect class="card" x="1268" y="558" width="288" height="120" rx="8"/>
+        <text class="hd" x="1282" y="580">Facturación</text>
+        <text class="s" x="1282" y="602">Cuenta completa · crédito ≈ 290.923 CLP</text>
+        <text class="s" x="1282" y="622">Alerta: 10.000 CLP (10 %, 50 %, 100 %)</text>
+        <text class="s" x="1282" y="642">Se cobra solo si se acaba el crédito</text>
+        <text class="m" x="1282" y="664">cuenta 019B5F-FE5A4D-399EB0</text>
+      </g>
+      <g class="wip"><rect class="card" x="1268" y="690" width="288" height="70" rx="8"/>
+        <text class="hd" x="1282" y="712">Cuota GPU L4 en Cloud Run</text>
+        <text class="m" x="1282" y="732">0 · motivo: proyecto sin historial</text>
+        <text class="m" x="1282" y="748">pedida a Ventas de Google</text>
+      </g>
+      <g><rect class="card" x="1268" y="772" width="288" height="250" rx="8"/>
+        <text class="hd" x="1282" y="794">APIs habilitadas</text>
+        <text class="s" x="1282" y="818">Cloud Run · Cloud SQL Admin</text>
+        <text class="s" x="1282" y="838">Cloud Storage · Artifact Registry</text>
+        <text class="s" x="1282" y="858">Cloud Build · Secret Manager · IAM</text>
+        <text class="s" x="1282" y="878">Cloud Vision (prueba de dorsales)</text>
+        <text class="s" x="1282" y="898">Cloud Quotas · Cloud Billing</text>
+        <text class="s" x="1282" y="918">Billing Budgets (alerta)</text>
+        <text class="s" x="1282" y="938">Compute · Logging · Monitoring</text>
+        <text class="m" x="1282" y="966">Las de BigQuery y Dataplex vienen</text>
+        <text class="m" x="1282" y="982">activadas por defecto y no se usan</text>
+      </g>
+
+      <!-- ===== Conexiones ===== -->
+      <path class="link" d="M364,190 H466"/>
+      <path class="link" d="M364,560 H446 V870 H1038 V846"/>
+      <path class="link" d="M864,800 H826"/>
+      <path class="link" d="M646,758 V706"/>
+      <path class="link" d="M1268,176 H1246 V390 H700 V432"/>
+      <path class="link both" d="M590,432 V370"/>
+      <path class="link" d="M824,512 H862"/>
+      <path class="link" d="M200,600 V628"/>
+      <path class="link" d="M364,500 H400 V900 H382"/>
+      <g class="num"><circle cx="410" cy="190" r="10"/><text x="410" y="190">1</text></g>
+      <g class="num"><circle cx="446" cy="660" r="10"/><text x="446" y="660">2</text></g>
+      <g class="num"><circle cx="845" cy="800" r="10"/><text x="845" y="800">3</text></g>
+      <g class="num"><circle cx="646" cy="714" r="10"/><text x="646" y="714">4</text></g>
+      <g class="num"><circle cx="1000" cy="390" r="10"/><text x="1000" y="390">5</text></g>
+      <g class="num"><circle cx="590" cy="401" r="10"/><text x="590" y="401">6</text></g>
+      <g class="num"><circle cx="843" cy="512" r="10"/><text x="843" y="512">7</text></g>
+      <g class="num"><circle cx="222" cy="614" r="10"/><text x="222" y="614">8</text></g>
+      <g class="num"><circle cx="400" cy="780" r="10"/><text x="400" y="780">9</text></g>
+    </svg>
+    </div>
+  </section>
+
+  <section id="conexiones">
+    <h2 class="sec">Conexiones</h2>
+    <ol class="conex">
+      <li><b>1</b><span>Desde tu Mac se suben videos y modelos a los buckets con <code>gcloud storage cp</code>. Más adelante lo hará la app con una URL firmada.</span></li>
+      <li><b>2</b><span>El código de <code>worker/</code> se envía a Cloud Build con <code>gcloud builds submit</code>.</span></li>
+      <li><b>3</b><span>Cloud Build guarda la imagen <code>worker:v2</code> en Artifact Registry.</span></li>
+      <li><b>4</b><span>Al arrancar, el job descarga esa imagen. Como todo está en Iowa, no hay costo de transferencia.</span></li>
+      <li><b>5</b><span>Secret Manager le entrega al job la conexión a la base. La contraseña nunca está en el código ni en la imagen.</span></li>
+      <li><b>6</b><span>El job lee el video y los 4 modelos, y escribe las miniaturas de los jugadores en el bucket de videos.</span></li>
+      <li><b>7</b><span>El job escribe posiciones, pose, balón, métricas y pases en Cloud SQL, y marca el partido como «listo».</span></li>
+      <li><b>8</b><span>Los cambios del código se suben a GitHub con <code>git push</code>. Lo haces tú, desde tu terminal.</span></li>
+      <li><b>9</b><span>Las pruebas con servicios externos, como la lectura de dorsales con Cloud Vision, se hacen desde tu Mac.</span></li>
+    </ol>
+  </section>
+
+  <h2 class="sec" id="proceso">Proceso: del video al reporte</h2>
+
+
+  <div class="diagram" role="img" aria-label="Diagrama de carriles: cuerpo técnico, app y API, worker y datos">
+    <svg viewBox="0 0 1720 620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--fg)"/>
+        </marker>
+      </defs>
+
+      <!-- Carriles -->
+      <rect x="0" y="20" width="1720" height="140" fill="var(--lane)"/>
+      <rect x="0" y="160" width="1720" height="140" fill="var(--lane-alt)"/>
+      <rect x="0" y="300" width="1720" height="140" fill="var(--lane)"/>
+      <rect x="0" y="440" width="1720" height="160" fill="var(--lane-alt)"/>
+      <g stroke="var(--line)"><line x1="0" y1="160" x2="1720" y2="160"/><line x1="0" y1="300" x2="1720" y2="300"/><line x1="0" y1="440" x2="1720" y2="440"/><line x1="150" y1="20" x2="150" y2="600"/></g>
+      <text class="lane-label" x="16" y="86">Cuerpo técnico</text><text class="lane-sub" x="16" y="104">club / academia</text>
+      <text class="lane-label" x="16" y="226">App y API</text><text class="lane-sub" x="16" y="244">Cloud Run · futai-api</text>
+      <text class="lane-label" x="16" y="362">Worker IA</text><text class="lane-sub" x="16" y="380">Cloud Run Job</text>
+      <text class="tm" x="16" y="398" style="fill:var(--wip)">GPU L4: esperando cuota</text>
+      <text class="lane-label" x="16" y="512">Datos</text><text class="lane-sub" x="16" y="530">Cloud Storage</text><text class="lane-sub" x="16" y="546">Cloud SQL</text>
+
+      <!-- Flujos -->
+      <path class="flow" d="M218,90 H238"/>
+      <path class="flow" d="M300,118 V230 H378"/>
+      <path class="flow" d="M502,230 H528"/>
+      <path class="flow" d="M652,230 H740 V340"/>
+      <path class="flow" d="M802,370 H828"/>
+      <path class="flow" d="M1012,370 H1038"/>
+      <path class="flow" d="M1162,370 H1198"/>
+      <path class="flow" d="M1322,370 H1342 V90 H1358"/>
+      <path class="flow" d="M1420,118 V200"/>
+      <path class="flow" d="M1482,230 H1508"/>
+      <path class="flow" d="M1570,200 V120"/>
+      <path class="flow" d="M1632,90 H1660"/>
+      <!-- Asociaciones con datos -->
+      <path class="assoc" d="M440,258 V486"/>
+      <path class="assoc" d="M590,258 V486"/>
+      <path class="assoc" d="M740,486 V400"/>
+      <path class="assoc" d="M1100,400 V486"/>
+      <path class="assoc" d="M1260,400 V486"/>
+      <path class="assoc" d="M1420,258 V486"/>
+
+      <!-- Eventos -->
+      <circle class="ev" cx="200" cy="90" r="17"/><text class="tm" x="200" y="132" text-anchor="middle">partido grabado</text>
+      <circle class="ev end" cx="1680" cy="90" r="17"/><text class="tm" x="1680" y="132" text-anchor="middle">decisiones</text>
+
+      <!-- Cuerpo técnico -->
+      <g class="task todo"><rect x="240" y="62" width="120" height="56" rx="8"/><text class="t" x="300" y="86" text-anchor="middle">Sube el video</text><text class="tm" x="300" y="104" text-anchor="middle">MP4 de cualquier cámara</text></g>
+      <g class="task todo"><rect x="1360" y="62" width="120" height="56" rx="8"/><text class="t" x="1420" y="86" text-anchor="middle">Etiqueta jugadores</text><text class="tm" x="1420" y="104" text-anchor="middle">nombre a cada miniatura</text></g>
+      <g class="task todo"><rect x="1510" y="62" width="120" height="56" rx="8"/><text class="t" x="1570" y="86" text-anchor="middle">Revisa el reporte</text><text class="tm" x="1570" y="104" text-anchor="middle">por partido y jugador</text></g>
+
+      <!-- App y API -->
+      <g class="task todo"><rect x="380" y="202" width="120" height="56" rx="8"/><text class="t" x="440" y="226" text-anchor="middle">URL de subida</text><text class="tm" x="440" y="244" text-anchor="middle">firmada, directa al bucket</text></g>
+      <g class="task todo"><rect x="530" y="202" width="120" height="56" rx="8"/><text class="t" x="590" y="226" text-anchor="middle">Crea el partido</text><text class="tm" x="590" y="244" text-anchor="middle">y lanza el job</text></g>
+      <g class="task todo"><rect x="1360" y="202" width="120" height="56" rx="8"/><text class="t" x="1420" y="226" text-anchor="middle">Guarda asignaciones</text><text class="tm" x="1420" y="244" text-anchor="middle">recalcula por jugador</text></g>
+      <g class="task todo"><rect x="1510" y="202" width="120" height="56" rx="8"/><text class="t" x="1570" y="226" text-anchor="middle">Genera el reporte</text><text class="tm" x="1570" y="244" text-anchor="middle">métricas y mapas</text></g>
+
+      <!-- Worker -->
+      <g class="task done"><rect x="680" y="342" width="120" height="56" rx="8"/><text class="t" x="740" y="366" text-anchor="middle">Descarga</text><text class="tm" x="740" y="384" text-anchor="middle">video + 4 modelos</text></g>
+      <g class="task done"><rect x="830" y="326" width="180" height="88" rx="8"/><text class="t" x="920" y="348" text-anchor="middle">Análisis por muestra</text><text class="tm" x="920" y="366" text-anchor="middle">8 cuadros por segundo</text><text class="tm" x="920" y="384" text-anchor="middle">calibra cancha · sigue</text><text class="tm" x="920" y="400" text-anchor="middle">jugadores · pose · balón</text></g>
+      <g class="task done"><rect x="1040" y="342" width="120" height="56" rx="8"/><text class="t" x="1100" y="366" text-anchor="middle">Equipos e IDs</text><text class="tm" x="1100" y="384" text-anchor="middle">une fragmentos</text></g>
+      <g class="task done"><rect x="1200" y="342" width="120" height="56" rx="8"/><text class="t" x="1260" y="366" text-anchor="middle">Calcula métricas</text><text class="tm" x="1260" y="384" text-anchor="middle">las 5 del estudio</text></g>
+
+      <!-- Datos -->
+      <g class="done"><path class="store" stroke-width="2" d="M385,494 q55,-14 110,0 v52 q-55,14 -110,0 z"/><text class="t" x="440" y="522" text-anchor="middle">Video MP4</text><text class="tm" x="440" y="540" text-anchor="middle">bucket videos</text></g>
+      <g class="done"><path class="store" stroke-width="2" d="M535,494 q55,-14 110,0 v52 q-55,14 -110,0 z"/><text class="t" x="590" y="522" text-anchor="middle">partidos</text><text class="tm" x="590" y="540" text-anchor="middle">estado del análisis</text></g>
+      <g class="done"><path class="store" stroke-width="2" d="M685,494 q55,-14 110,0 v52 q-55,14 -110,0 z"/><text class="t" x="740" y="522" text-anchor="middle">Modelos</text><text class="tm" x="740" y="540" text-anchor="middle">bucket models</text></g>
+      <g class="done"><path class="store" stroke-width="2" d="M1035,494 q65,-14 130,0 v52 q-65,14 -130,0 z"/><text class="t" x="1100" y="516" text-anchor="middle">posiciones · pose</text><text class="tm" x="1100" y="532" text-anchor="middle">balón · miniaturas</text></g>
+      <g class="done"><path class="store" stroke-width="2" d="M1205,494 q55,-14 110,0 v52 q-55,14 -110,0 z"/><text class="t" x="1260" y="522" text-anchor="middle">métricas</text><text class="tm" x="1260" y="540" text-anchor="middle">pases</text></g>
+      <g class="done"><path class="store" stroke-width="2" d="M1365,494 q55,-14 110,0 v52 q-55,14 -110,0 z"/><text class="t" x="1420" y="522" text-anchor="middle">jugadores</text><text class="tm" x="1420" y="540" text-anchor="middle">asignaciones</text></g>
+      <text class="tm" x="1500" y="580">región: us-central1 (Iowa)</text>
+    </svg>
+  </div>
+
+  <section class="status" id="estado">
+    <div class="col done">
+      <h2>Hecho</h2>
+      <ul>
+        <li>Buckets, cuentas de servicio con permisos mínimos y secreto de la base</li>
+        <li>Esquema en Cloud SQL: 9 tablas, incluidas métricas, pases y etiquetado</li>
+        <li>Calibración automática de la cancha, suavizada en el tiempo</li>
+        <li>Seguimiento con BoT-SORT y compensación de cámara: de 30 a 6 fragmentos por jugador</li>
+        <li>Pose por recorte (94 % de los jugadores) y balón detectado en el 25 % de las muestras</li>
+        <li>Las 5 métricas: reacción, velocidad, pases, decisión y mapa de sombra</li>
+        <li>Imagen <code>worker:v2</code> y alerta de presupuesto en 10.000 CLP</li>
+        <li>Todo migrado a Iowa (us-central1): más barato y junto a la GPU</li>
+        <li>Primera corrida en la nube sin GPU: 60 s de video en 23 min, resultados en Cloud SQL</li>
+      </ul>
+    </div>
+    <div class="col wip">
+      <h2>En curso o bloqueado</h2>
+      <ul>
+        <li>Cuota de GPU L4: solicitud enviada a ventas de Google</li>
+      </ul>
+    </div>
+    <div class="col todo">
+      <h2>Pendiente</h2>
+      <ul>
+        <li>API de subida y lanzamiento del análisis</li>
+        <li>Pantalla de etiquetado de jugadores</li>
+        <li>Lectura de dorsales para mantener la identidad todo el partido</li>
+        <li>Afinar el modelo de balón con imágenes propias</li>
+        <li>Reporte por partido y por jugador</li>
+        <li>Validar metros con un video de cámara fija</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">Modelos y servicios</h2>
+    <div class="infra">
+      <table>
+        <thead><tr><th>Pieza</th><th>Qué usa</th><th>Para qué</th></tr></thead>
+        <tbody>
+          <tr><td>Calibración</td><td><code>football-pitch-detection-v9</code></td><td>32 puntos de la cancha por cuadro, de píxeles a metros (105 × 68 m)</td></tr>
+          <tr><td>Jugadores</td><td><code>football-player-detection-v9</code> + BoT-SORT</td><td>Jugador, arquero y árbitro; identidad en el tiempo</td></tr>
+          <tr><td>Balón</td><td><code>football-ball-detection-v2</code></td><td>Posesión, pases, decisión y reacción</td></tr>
+          <tr><td>Pose</td><td><code>yolo11s-pose</code></td><td>17 puntos del cuerpo por jugador</td></tr>
+          <tr><td>Proceso</td><td>Cloud Run Job, GPU NVIDIA L4</td><td>Un partido por ejecución, se apaga al terminar</td></tr>
+          <tr><td>Datos</td><td>Cloud Storage · Cloud SQL PostgreSQL 16</td><td>Videos y modelos · series de tiempo y métricas</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+</body></html>

@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos globales fuera de @layer para que también funcionen en la vista previa sin build. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  background-color: #0a0a0a;
+  color: #e5e7eb;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(0, 230, 118, 0.3);
+  color: #fff;
+}
+
+/* Los elementos con revelado inicial quedan ocultos hasta que Anime.js los anima. */
+[data-hero],
+[data-reveal] {
+  opacity: 0;
+}
+
+/* Escalado de elementos SVG desde su propio centro (bounding boxes, nodos). */
+.svg-center {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #00e676 0%, #10b981 45%, #00d2ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-hero],
+  [data-reveal] {
+    opacity: 1 !important;
+  }
+}
+
+/* Barra de progreso del avance automático en Características. */
+@keyframes feature-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Entrada de un nuevo evento en el feed de la demo. */
+@keyframes event-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

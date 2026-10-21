@@ -1,0 +1,80 @@
+# Reglas del MVP. El repositorio Git real está una carpeta más arriba.
+
+# Entornos y dependencias instaladas
+.venv/
+.venv-vision/
+venv/
+env/
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Configuración del equipo y credenciales; las plantillas sí se versionan
+.env
+.env.*
+!.env.example
+!.env.*.example
+.aws/
+.codex/
+.agents/
+*.pem
+*.p12
+*.pfx
+
+# Builds, logs y archivos temporales
+dist/
+build/
+coverage/
+.coverage
+htmlcov/
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+Desktop.ini
+._*
+__MACOSX/
+.idea/
+.vscode/
+
+# Datos locales de ejecución. Conservar la muestra pequeña necesaria para la demo.
+/FUTAI_DEMO_INTEGRADA/FUTAI_DEMO/backend/data/*
+!/FUTAI_DEMO_INTEGRADA/FUTAI_DEMO/backend/data/demo_parcial_provisional.json
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+
+# Videos, pesos y exportaciones binarias: almacenamiento externo/Releases/LFS
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.pt
+*.pth
+*.onnx
+*.engine
+*.zip
+*.rar
+*.7z
+
+# Versiones anteriores y estructura vacía; la app mantenida está en FUTAI_DEMO_INTEGRADA.
+/FrontEnd/
+/BackEnd/
+/docker-compose.yml
+
+# Resultados experimentales locales; los notebooks y scripts siguen incluidos.
+/Procesamiento/coordenadas_jugadores.csv
+/Procesamiento/homografia/
+/Procesamiento/Videos de prueba/
+/Procesamiento/Videos procesados/
+/Procesamiento/Fase 4 - homografía dinámica/
+/Procesamiento/Fase 5 - Metricas/*.csv
+/Procesamiento/Fase 5 - Metricas/*.json
+/Procesamiento/Fase 5 - Metricas/*.png

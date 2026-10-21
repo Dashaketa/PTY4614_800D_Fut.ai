@@ -1,0 +1,23 @@
+{
+  "video": "prueba2_20s.mp4",
+  "procesamiento": {
+    "tipo": "analisis_video_exploratorio",
+    "frames": 500,
+    "fps": 25,
+    "cobertura_homografia_pct": 85.6,
+    "observaciones_tracking": 11233,
+    "observaciones_en_cancha_y_calibradas": 8504,
+    "estado": "PROVISIONAL_NO_VALIDADO",
+    "nota": "Muestra PARCIAL de los resultados obtenidos en Colab. Importa el JSON completo cuando esté disponible."
+  },
+  "metricas_por_track": [
+    {"track_id": 20, "distancia_observada_m": 30.82, "velocidad_maxima_estimada_kmh": 26.67, "duracion_observada_s": 16.8, "numero_tramos": 2, "revision_recomendada": "PRIORITARIA"},
+    {"track_id": 6, "distancia_observada_m": 29.96, "velocidad_maxima_estimada_kmh": 31.51, "duracion_observada_s": 15.68, "numero_tramos": 4, "revision_recomendada": "PRIORITARIA"},
+    {"track_id": 13, "distancia_observada_m": 29.4, "velocidad_maxima_estimada_kmh": 37.19, "duracion_observada_s": 16.96, "numero_tramos": 3, "revision_recomendada": "PRIORITARIA"},
+    {"track_id": 18, "distancia_observada_m": 24.81, "velocidad_maxima_estimada_kmh": 35.55, "duracion_observada_s": 15.4, "numero_tramos": 3, "revision_recomendada": "PRIORITARIA"},
+    {"track_id": 2, "distancia_observada_m": 24.22, "velocidad_maxima_estimada_kmh": 24.05, "duracion_observada_s": 15.44, "numero_tramos": 3, "revision_recomendada": "PRIORITARIA"},
+    {"track_id": 17, "distancia_observada_m": 28.23, "velocidad_maxima_estimada_kmh": 23.06, "duracion_observada_s": 8.72, "numero_tramos": 1, "revision_recomendada": "NORMAL"},
+    {"track_id": 10, "distancia_observada_m": 23.74, "velocidad_maxima_estimada_kmh": 30.18, "duracion_observada_s": 17.04, "numero_tramos": 2, "revision_recomendada": "NORMAL"},
+    {"track_id": 4, "distancia_observada_m": 21.89, "velocidad_maxima_estimada_kmh": 31.0, "duracion_observada_s": 17.04, "numero_tramos": 2, "revision_recomendada": "NORMAL"}
+  ]
+}

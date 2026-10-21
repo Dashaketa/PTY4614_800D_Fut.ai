@@ -1,0 +1,16 @@
+# Reglas generales para PTY4614_800D_Fut.ai/.gitignore.
+# Las reglas específicas de código/datos se mantienen en MVP/.gitignore.
+.DS_Store
+._*
+__MACOSX/
+Thumbs.db
+Desktop.ini
+.env
+.env.*
+!.env.example
+!.env.*.example
+.aws/
+*.pem
+*.p12
+*.pfx
+/MVP.rar

@@ -1,0 +1,8 @@
+# Instalar en un entorno independiente del API (por ejemplo backend/.venv-vision).
+# Ultralytics instala PyTorch; para CUDA, instalar primero la variante de PyTorch adecuada.
+ultralytics>=8.3,<9
+opencv-python>=4.10,<6
+numpy>=1.26,<3
+lap>=0.5.12,<0.6
+# Incluye un binario local de FFmpeg para exportar H.264 reproducible en navegador.
+imageio-ffmpeg>=0.5,<0.7
