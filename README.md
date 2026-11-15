@@ -49,7 +49,13 @@ Tres piezas en un mismo computador: una **página web** sin compilación, un **s
 
 <p align="center"><img src=".github/assets/resultados.png" alt="Resultados medidos del motor" width="100%"></p>
 
-Validado contra **SoccerTrack v2**, un dataset con posiciones reales de cada jugador: error de posición de **0,88 m** (mediana) y separación de equipos de **85,5 %**. La identidad exacta (26 %), los pases y los tiros todavía no son confiables, y lo declaramos así.
+Validado contra **SoccerTrack v2**, un dataset con posiciones reales de cada jugador: error de posición de **0,88 m** (mediana) y separación de equipos de **85,5 %**. La identidad exacta de cada jugador llega a **74 %** y sigue en mejora; los pases y los tiros todavía no son confiables, y lo declaramos así.
+
+## Modelo de negocio
+
+<p align="center"><img src=".github/assets/modelo-negocio.png" alt="Business Model Canvas de FUT.AI" width="100%"></p>
+
+Tres planes cobrados en línea con Webpay Plus (valores de prueba, en CLP): **por partido $19.990**, **temporada $149.990** y **club $349.990**.
 
 ## Tecnologías
 
