@@ -1,0 +1,53 @@
+/* Recorrido automático sobre los diagramas de Archify (tema FUT.AI). */
+.tour-dock { position: fixed; z-index: 60; left: 50%; bottom: 18px; translate: -50% 0; width: min(600px, calc(100% - 32px));
+  font-family: "Google Sans Flex", -apple-system, "Segoe UI", sans-serif; font-variation-settings: "ROND" 100; color: #1a0e08; letter-spacing: -.01em; }
+.tour-start { display: inline-flex; white-space: nowrap; width: auto !important; align-items: center; gap: 10px; height: 46px; padding: 0 20px 0 16px; border: 0; border-radius: 999px; cursor: pointer;
+  background: #2e6b1f; color: #fff; font-family: inherit; font-weight: 650; font-size: 15px; line-height: 1; box-shadow: 0 14px 30px -14px #2e6b1fcc, 0 0 0 1px #ffffff26 inset;
+  position: relative; left: 50%; translate: -50% 0; transition: transform .2s cubic-bezier(.2,.8,.2,1), background .2s; }
+.tour-start:hover { background: #24561a; transform: translateY(-1px); }
+.tour-dock svg { flex: none !important; min-width: 0 !important; max-width: none !important; }
+.tour-start svg { width: 18px !important; height: 18px !important; }
+.tour-card { display: none; background: rgba(255, 255, 255, .94); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border-radius: 22px; padding: 14px 16px 12px; box-shadow: 0 0 0 1px #140a0512, 0 1px 2px #140a050d, 0 26px 50px -26px #501e0566; }
+.tour-dock[data-on="true"] .tour-card { display: block; }
+.tour-dock[data-on="true"] .tour-start { display: none; }
+.tour-top { display: flex; align-items: center; gap: 10px; }
+.tour-step { font: 600 11.5px "Google Sans Code", ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; color: #4f9a2b; white-space: nowrap; }
+.tour-title { font-weight: 700; font-size: 16px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tour-text { margin: 6px 0 10px; font-size: 14.5px; line-height: 1.45; color: #1a0e08c7; min-height: 2.9em; }
+.tour-bar { display: flex; align-items: center; gap: 6px; }
+.tour-dots { display: flex; gap: 4px; flex: 1; }
+.tour-dots i { flex: 1; height: 4px; border-radius: 2px; background: #ece4d8; overflow: hidden; position: relative; }
+.tour-dots i.done { background: #8dc63f; }
+.tour-dots i.now::after { content: ""; position: absolute; inset: 0; background: #4f9a2b; transform-origin: left; transform: scaleX(0);
+  animation: tour-fill var(--tour-ms, 5600ms) linear forwards; }
+.tour-dock[data-paused="true"] .tour-dots i.now::after { animation-play-state: paused; }
+@keyframes tour-fill { to { transform: scaleX(1); } }
+.tour-btn { width: 34px; height: 34px; border: 0; border-radius: 999px; background: #f3eee7; color: #1a0e08; cursor: pointer; display: grid; place-items: center; flex: none; }
+.tour-btn:hover { background: #ece5db; }
+.tour-btn svg { width: 15px !important; height: 15px !important; }
+.tour-btn.main { background: #1a0e08; color: #fff; }
+.tour-btn.main:hover { background: #2a1309; }
+
+/* Foco sobre el diagrama */
+svg.tour-on [data-node-id], svg.tour-on [data-edge-from] { transition: opacity .55s cubic-bezier(.2,.8,.2,1), filter .55s; }
+svg.tour-on [data-node-id]:not(.tour-hit) { opacity: .16; }
+svg.tour-on [data-edge-from]:not(.tour-hit) { opacity: .1; }
+svg.tour-on [data-node-id].tour-hit { filter: drop-shadow(0 0 10px rgba(79, 154, 43, .45)) drop-shadow(0 6px 14px rgba(46, 107, 31, .18)); }
+svg.tour-on .ambient-edge-flow:not(.tour-hit) { opacity: 0 !important; }
+
+@media (max-width: 700px) {
+  /* Barra de Archify: solo lo que cabe (pantalla completa y exportar). */
+  #btn-theme, .preset-wrap, #btn-motion { display: none !important; }
+  /* Panel compacto, sobre el globo de Netlify. */
+  .tour-dock { bottom: 72px; width: calc(100% - 24px); }
+  .tour-card { padding: 10px 12px 10px; border-radius: 18px; }
+  .tour-title { font-size: 15px; }
+  .tour-text { font-size: 13.5px; line-height: 1.4; margin: 4px 0 8px; min-height: 0; }
+  .tour-btn { width: 32px; height: 32px; }
+  .tour-start { height: 44px; font-size: 14.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  svg.tour-on [data-node-id], svg.tour-on [data-edge-from] { transition: none; }
+  .tour-dots i.now::after { animation: none; transform: scaleX(1); }
+}
