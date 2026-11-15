@@ -22,5 +22,5 @@ Los diarios individuales 2.1 y las planillas de evaluación siguen en la carpeta
 - **Motor:** YOLO + ByteTrack + calibración con 32 puntos, en lugar de Roboflow + BoT-SORT.
 - **Producto:** se agregaron cuentas y espacios por equipo, registro con pago de prueba (Webpay Plus) y panel de administración.
 - **Metodología:** Scrum hasta el 18 de octubre y Kanban después.
-- **Roles:** Sebastián López (motor, servidor y web), Héctor Arriagada (motor), Renato Palma y Cristóbal Sepúlveda (documentación).
+- **Roles:** Sebastián López (líder técnico y desarrollador principal), Héctor Arriagada (motor de visión e infraestructura: seguimiento, identidad y migración a Azure), Renato Palma (investigación y nube: prueba en Google Cloud) y Cristóbal Sepúlveda (calidad de entregables).
 - **Resultados:** medidos sobre 5 partidos reales y validados contra SoccerTrack v2.

@@ -43,6 +43,8 @@
 
 Tres piezas en un mismo computador: una **página web** sin compilación, un **servidor** en Python con FastAPI y el **motor de visión**, que el servidor lanza como proceso aparte (un análisis a la vez). Los datos se guardan en archivos JSON y CSV.
 
+**Próximo paso:** la migración del proyecto a Azure, en la que trabaja Héctor Arriagada.
+
 ## Resultados medidos
 
 <p align="center"><img src=".github/assets/resultados.png" alt="Resultados medidos del motor" width="100%"></p>
@@ -73,16 +75,16 @@ Las carpetas siguen la pauta de evidencias de la asignatura.
 
 ### Por qué hay una Fase 2 v2
 
-La primera versión de la Fase 2 describía un pipeline en Google Cloud (Cloud Run, Cloud SQL, Docker). Ese camino se probó con otro modelo y se descartó, porque el motor desarrollado en local dio mejores resultados. La versión 2 describe el producto que se entrega.
+La primera versión de la Fase 2 describía un pipeline en Google Cloud (Cloud Run, Cloud SQL, Docker). Renato Palma lo probó con otro modelo y se descartó, porque el motor desarrollado en local dio mejores resultados. La versión 2 describe el producto que se entrega.
 
 ## Equipo
 
-| Integrante | Rol |
-|---|---|
-| Sebastián López | Motor de visión, servidor y plataforma web |
-| Héctor Arriagada | Motor de visión |
-| Renato Palma | Documentación |
-| Cristóbal Sepúlveda | Documentación |
+| Integrante | Rol | Aporte |
+|---|---|---|
+| **Sebastián López** | Líder técnico y desarrollador principal | Arquitectura de la solución, motor de visión, servidor FastAPI, plataforma web, validación con SoccerTrack v2 y video de presentación |
+| **Héctor Arriagada** | Motor de visión e infraestructura | Seguimiento e identidad de los jugadores (ByteTrack, unión de fragmentos y asignación de los 11 jugadores con nombre), investigación de modelos y migración del proyecto a Azure, en curso |
+| **Renato Palma** | Investigación y nube | Investigación de modelos y alternativas junto a Héctor, y prueba del pipeline en Google Cloud que permitió compararlo con el motor local |
+| **Cristóbal Sepúlveda** | Calidad de entregables | Documentación de los procesos del equipo y revisión de que cada evidencia estuviera completa y con el formato de la pauta |
 
 **Metodología:** Scrum hasta el 18 de octubre de 2026 y luego Kanban, con minutas de las decisiones.
 
