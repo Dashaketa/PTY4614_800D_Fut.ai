@@ -3,6 +3,7 @@
 </p>
 
 <p align="center">
+  <a href="https://www.youtube.com/watch?v=g3zd_ceGbEU"><img alt="Ver el video" src="https://img.shields.io/badge/video-ver_en_YouTube-c4302b?style=for-the-badge&logo=youtube&logoColor=white"></a>
   <a href="https://futai-diagramas.netlify.app"><img alt="Diagramas en vivo" src="https://img.shields.io/badge/diagramas-en_vivo-2e6b1f?style=for-the-badge&logo=netlify&logoColor=white"></a>
   <img alt="Python" src="https://img.shields.io/badge/Python-FastAPI-1a0e08?style=for-the-badge&logo=python&logoColor=8dc63f">
   <img alt="Visión por computador" src="https://img.shields.io/badge/YOLO-ByteTrack-1a0e08?style=for-the-badge&logo=opencv&logoColor=8dc63f">
@@ -21,6 +22,16 @@
 - **Plataforma web:** cada club tiene su espacio privado con sus colores, historial y dashboard; el registro incluye pago de prueba con Transbank Webpay Plus.
 
 > **Diagramas interactivos, con recorrido guiado:** **[futai-diagramas.netlify.app](https://futai-diagramas.netlify.app)**
+
+## Video de presentación
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=g3zd_ceGbEU">
+    <img src="https://img.youtube.com/vi/g3zd_ceGbEU/maxresdefault.jpg" alt="Ver el video de presentación de FUT.AI en YouTube" width="100%">
+  </a>
+  <br>
+  <sub>▶ Clic en la imagen para ver el recorrido de FUT.AI en YouTube</sub>
+</p>
 
 ## Cómo funciona
 
