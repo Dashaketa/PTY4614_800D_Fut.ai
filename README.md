@@ -75,13 +75,12 @@ Las carpetas siguen la pauta de evidencias de la asignatura.
 | Carpeta | Contenido |
 |---|---|
 | [`Fase 1`](Fase%201) | Definición del proyecto: evidencias individuales (1.1, 1.2, 1.3) y grupales (presentación, 1.4, 1.5, mockups). |
-| [`Fase 2`](Fase%202) | Desarrollo, versión original (octubre). Se conserva como registro histórico. |
-| [`Fase 2 v2`](Fase%202%20v2) | **Desarrollo, versión 2:** guías 2.4 y 2.6 y entregables ágiles reescritos para que coincidan con lo que realmente se construyó, con diagramas nuevos. |
+| [`Fase 2`](Fase%202) | Desarrollo: diarios 2.1, guías 2.4 y 2.6 y entregables ágiles, actualizados para que coincidan con lo que realmente se construyó, con diagramas nuevos. |
 | [`Fase 3`](Fase%203) | Cierre: diarios de reflexión 3.1 y presentación final. |
 
-### Por qué hay una Fase 2 v2
+### Por qué se actualizó la Fase 2
 
-La primera versión de la Fase 2 describía un pipeline en Google Cloud (Cloud Run, Cloud SQL, Docker). Renato Palma lo probó con otro modelo y se descartó, porque el motor desarrollado en local dio mejores resultados. La versión 2 describe el producto que se entrega.
+La primera versión de la Fase 2 describía un pipeline en Google Cloud (Cloud Run, Cloud SQL, Docker). Renato Palma lo probó con otro modelo y se descartó, porque el motor desarrollado en local dio mejores resultados. La versión actual describe el producto que se entrega.
 
 ## Equipo
 
