@@ -9,9 +9,9 @@ Formato: `Apellido_Nombre_3.1_APT122_DiarioReflexionFase3.docx`
 | Integrante | Archivo | Estado |
 |---|---|---|
 | Sebastián López | [`Lopez_Sebastian_3.1_APT122_DiarioReflexionFase3.docx`](Evidencias%20Individuales/Lopez_Sebastian_3.1_APT122_DiarioReflexionFase3.docx) | Entregado |
-| Renato Palma | `Palma_Renato_3.1_APT122_DiarioReflexionFase3.docx` | Pendiente |
-| Héctor Arriagada | `Arriagada_Hector_3.1_APT122_DiarioReflexionFase3.docx` | Pendiente |
-| Cristóbal Sepúlveda | `Sepulveda_Cristobal_3.1_APT122_DiarioReflexionFase3.docx` | Pendiente |
+| Renato Palma | [`Palma_Renato_3.1_APT122_DiarioReflexionFase3.docx`](Evidencias%20Individuales/Palma_Renato_3.1_APT122_DiarioReflexionFase3.docx) | Entregado |
+| Héctor Arriagada | [`Arriagada_Hector_3.1_APT122_DiarioReflexionFase3.docx`](Evidencias%20Individuales/Arriagada_Hector_3.1_APT122_DiarioReflexionFase3.docx) | Entregado |
+| Cristóbal Sepúlveda | [`Sepulveda_Cristobal_3.1_APT122_DiarioReflexionFase3.docx`](Evidencias%20Individuales/Sepulveda_Cristobal_3.1_APT122_DiarioReflexionFase3.docx) | Entregado |
 
 ## Evidencias Grupales
 
