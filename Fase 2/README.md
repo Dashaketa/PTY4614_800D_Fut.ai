@@ -12,6 +12,7 @@ Actualizada el 15 de noviembre de 2026 para que coincida con lo que realmente se
 | Evidencias Grupales | `2.6_GuiaEstudiante_Fase 2_Informe Final Proyecto APT (Español).docx` |
 | Evidencias Grupales | `PLANILLA DE EVALUACION FINAL FASE 2.xlsx` |
 | Evidencias Proyecto | `Presentación Proyecto.pptx` (presentación de la Fase 2) |
+| Evidencias Proyecto · sistema | Aplicación y base de datos (archivos JSON y CSV): código fuente en [Google Drive](https://drive.google.com/drive/folders/1K-TxUYaVlZUUb87NbkhHmxeFMy5ESKp3?usp=drive_link), por el límite de 100 MB de GitHub |
 | Evidencias Proyecto · documentación | `Entregables_Metodologia_Agil/00` a `10` |
 | Evidencias Proyecto · diagramas | `Entregables_Metodologia_Agil/Diagramas/*.png` (hechos con Archify) |
 | Evidencias Proyecto · diagramas interactivos | `Entregables_Metodologia_Agil/Diagramas/interactivos/*.html`, con recorrido guiado |

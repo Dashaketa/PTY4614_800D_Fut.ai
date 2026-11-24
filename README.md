@@ -45,6 +45,15 @@ Tres piezas en un mismo computador: una **página web** sin compilación, un **s
 
 **Próximo paso:** la migración del proyecto a Azure, en la que trabaja Héctor Arriagada.
 
+## Código fuente
+
+El código del producto no está en este repositorio: el proyecto completo pesa cerca de 15 GB (videos de partidos, análisis generados, entorno de Python y pesos de los modelos) y GitHub solo acepta archivos de hasta 100 MB. El código fuente está en **[Google Drive](https://drive.google.com/drive/folders/1K-TxUYaVlZUUb87NbkhHmxeFMy5ESKp3?usp=drive_link)**, con:
+
+- `motor/`, `servidor/` y `web/`: el código real de la plataforma.
+- `Dockerfile`, `docker-compose.yml` y `.env.example`: cómo levantar el sistema con `docker compose up --build`.
+- `tests/`: 33 pruebas automatizadas (unitarias, de integración, de seguridad y de rendimiento).
+- `README.md`: qué incluye, qué se dejó fuera (videos, cuentas y pesos de los modelos) y cómo ejecutarlo.
+
 ## Resultados medidos
 
 <p align="center"><img src=".github/assets/resultados.png" alt="Resultados medidos del motor" width="100%"></p>
