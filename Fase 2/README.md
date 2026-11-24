@@ -7,8 +7,11 @@ Actualizada el 15 de noviembre de 2026 para que coincida con lo que realmente se
 | Pauta | Archivo |
 |---|---|
 | Evidencias Individuales | Diarios de reflexión 2.1 de cada integrante |
-| Evidencias Grupales | `2.4_GuiaEstudiante_Fase 2_DesarrolloProyecto APT.docx` |
-| Evidencias Grupales | `2.6_GuiaEstudiante_Fase 2_Informe Final Proyecto APT.docx` |
+| Evidencias Grupales | `2.4_GuiaEstudiante_Fase 2_DesarrolloProyecto APT (Español).docx` |
+| Evidencias Grupales | `PLANILLA DE EVALUACION AVANCE FASE 2.xlsx` |
+| Evidencias Grupales | `2.6_GuiaEstudiante_Fase 2_Informe Final Proyecto APT (Español).docx` |
+| Evidencias Grupales | `PLANILLA DE EVALUACION FINAL FASE 2.xlsx` |
+| Evidencias Proyecto | `Presentación Proyecto.pptx` (presentación de la Fase 2) |
 | Evidencias Proyecto · documentación | `Entregables_Metodologia_Agil/00` a `10` |
 | Evidencias Proyecto · diagramas | `Entregables_Metodologia_Agil/Diagramas/*.png` (hechos con Archify) |
 | Evidencias Proyecto · diagramas interactivos | `Entregables_Metodologia_Agil/Diagramas/interactivos/*.html`, con recorrido guiado |
